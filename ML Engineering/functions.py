@@ -63,7 +63,7 @@ def getVideoIDs():
             page_token = 0
 
     # write videos ids as parquet file
-    pl.DataFrame(video_record_list).write_parquet('data/video-ids.parquet')
+    pl.DataFrame(video_record_list).write_parquet('ML Engineering/data/video-ids.parquet')
 
 
 def extractTranscriptText(transcript: list) -> str:
@@ -87,7 +87,7 @@ def getVideoTranscripts():
     """
 
 
-    df = pl.read_parquet('data/video-ids.parquet')
+    df = pl.read_parquet('ML Engineering/data/video-ids.parquet')
 
     transcript_text_list = []
 
@@ -107,7 +107,7 @@ def getVideoTranscripts():
     df = df.with_columns(pl.Series(name="transcript", values=transcript_text_list))
 
     # write dataframe to file
-    df.write_parquet('data/video-transcripts.parquet')
+    df.write_parquet('ML Engineering/data/video-transcripts.parquet')
 
 
 def handleSpecialStrings(df: pl.dataframe.frame.DataFrame) -> pl.dataframe.frame.DataFrame:
@@ -150,12 +150,12 @@ def transformData():
             - setDatatypes()
     """
 
-    df = pl.read_parquet('data/video-transcripts.parquet')
+    df = pl.read_parquet('ML Engineering/data/video-transcripts.parquet')
 
     df = handleSpecialStrings(df)
     df = setDatatypes(df)
 
-    df.write_parquet('data/video-transcripts.parquet')
+    df.write_parquet('ML Engineering/data/video-transcripts.parquet')
 
 def createTextEmbeddings():
     """
@@ -163,7 +163,7 @@ def createTextEmbeddings():
     """
 
     # read data from file
-    df = pl.read_parquet('data/video-transcripts.parquet')
+    df = pl.read_parquet('ML Engineering/data/video-transcripts.parquet')
 
     # define embedding model and columns to embed
     # model_path = 'data/all-MiniLM-L6-v2'
@@ -184,4 +184,4 @@ def createTextEmbeddings():
         df = pl.concat([df, df_embedding], how='horizontal')
 
     # write data to file
-    df.write_parquet('data/video-index.parquet')
+    df.write_parquet('ML Engineering/data/video-index.parquet')
