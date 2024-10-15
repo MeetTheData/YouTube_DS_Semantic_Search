@@ -15,6 +15,7 @@ st.markdown("""
             border: 2px solid #FF6347;  /* Tomato border */
             padding: 5px;
             font-family: 'Courier New', monospace;
+             color: black;
         }
         .stButton > button {
             background-color: #FF6347;  /* Tomato */
