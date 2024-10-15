@@ -31,7 +31,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 headers = {
-    "authorization": st.secrets["GCR_API_KEY"],
+    "authorization": st.secrets["GCR_API_URL"],
     "content-type": "application/json"
 }
 
