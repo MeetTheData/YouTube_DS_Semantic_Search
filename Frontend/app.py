@@ -1,10 +1,37 @@
 import streamlit as st
 import requests
 import json
-import os
+
+# Apply custom styles
+st.markdown("""
+    <style>
+        h1 {
+            color: #FF6347;  /* Tomato color */
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+        .stTextInput > div > div > input {
+            background-color: #F0F8FF;  /* Light cyan */
+            border: 2px solid #FF6347;  /* Tomato border */
+            padding: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        .stButton > button {
+            background-color: #FF6347;  /* Tomato */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #F0F8FF;  /* Light cyan border */
+        }
+        .stMarkdown {
+            color: #2F4F4F;  /* Dark slate gray */
+            font-family: 'Georgia', serif;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 headers = {
-    "authorization": st.secrets["GCR_API_URL"],
+    "authorization": st.secrets["GCR_API_KEY"],
     "content-type": "application/json"
 }
 
@@ -14,7 +41,7 @@ def callSearchAPI(query: str) -> dict:
     """
     url = st.secrets["GCR_API_URL"]
     params = {"query": query}
-    response = requests.get(url + "/search", params=params)
+    response = requests.get(url + "/search", params=params, headers=headers)
     return json.loads(response.text)
 
 def formatResultText(title: str, video_id: str):
@@ -35,14 +62,14 @@ def searchResults(query):
     """
     response = callSearchAPI(query)
     
-    if not response['title']:
+    if not response.get('title'):
         st.write("No results. Try rephrasing your query.")
     else:
         for i in range(len(response['title'])):
             video_id = response['video_id'][i]
             title = response['title'][i]
             
-            st.markdown(formatResultText(title, video_id))
+            st.markdown(formatResultText(title, video_id), unsafe_allow_html=True)
             st.components.v1.html(formatVideoEmbed(video_id), height=324)
             st.markdown("---")
 
