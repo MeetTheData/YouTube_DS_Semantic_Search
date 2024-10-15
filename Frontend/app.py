@@ -31,7 +31,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 headers = {
-    "authorization": st.secrets["GCR_API_URL"],
+    "authorization": st.secrets["GCR_API_URL_KEY"],
     "content-type": "application/json"
 }
 
@@ -39,7 +39,7 @@ def callSearchAPI(query: str) -> dict:
     """
     Call search API hosted on AWS
     """
-    url = st.secrets["GCR_API_URL"]
+    url = st.secrets["GCR_API_URL_KEY"]
     params = {"query": query}
     response = requests.get(url + "/search", params=params, headers=headers)
     return json.loads(response.text)
