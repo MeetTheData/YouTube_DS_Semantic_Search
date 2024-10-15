@@ -1,1 +1,1 @@
-yt_key = 'AIzaSyBNILNh6slGNCFMxlYEj7WPSSw06XqXcoo'
+yt_key = 'YOUR_YOUTUBE_API_KEY'
